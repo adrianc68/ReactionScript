@@ -9,7 +9,7 @@ import pygame
 
 LOG_FILE_PATH = ("/Users/angeladrian/Library/Application Support/minecraft/logs/latest.log")
 LOG_UNSCRAMBLES = True
-time_for_reaction = 18
+time_for_reaction = 300
 
 def send_macro(text): 
     pyperclip.copy(text)
@@ -106,24 +106,24 @@ def read_chat_log():
             if not new_line:
                 time.sleep(0.1) 
                 continue
-            # if '[CHAT]' in new_line and new_line.startswith("Reaction » "): 
+            
             if "[CHAT]" in new_line:
-
                 chat_message = new_line.split("[CHAT]")[1].strip()
-                # print(chat_message)
-                if "Reaction » " in chat_message:
-                    after_reaction = chat_message.split("Reaction » ", 1)[1]
-                    if after_reaction.startswith("Unscramble"):
-                        unscrable_word(after_reaction)
-                        start_timers()
-                    elif after_reaction.startswith("Type"):
-                        type_word(after_reaction)
-                        start_timers()
-                    elif after_reaction.startswith("Solve"):
-                        solve_expression(after_reaction)
-                        start_timers()
-                    else:
-                        log_unscrambles(after_reaction)
+                if chat_message.startswith("Reaction » "):
+                    print(chat_message)
+                    if "Reaction » " in chat_message:
+                        after_reaction = chat_message.split("Reaction » ", 1)[1]
+                        if after_reaction.startswith("Unscramble"):
+                            unscrable_word(after_reaction)
+                            start_timers()
+                        elif after_reaction.startswith("Type"):
+                            type_word(after_reaction)
+                            start_timers()
+                        elif after_reaction.startswith("Solve"):
+                            solve_expression(after_reaction)
+                            start_timers()
+                        else:
+                            log_unscrambles(after_reaction)
 
 def play_sound_and_clear_clipboard():
     pygame.mixer.init()
